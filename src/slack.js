@@ -10,6 +10,13 @@ const getUserList = (next) => {
   });
 };
 
+const getPeopleProfiles = (resp) => {
+  return resp
+    .members
+    .filter((m) => !m.is_bot && !m.deleted)
+    .map(m => m.profile);
+};
+
 const getProfile = (body) => body.body.event.user.profile;
 const getStatusText = (body) => getProfile(body).status_text;
 const getStatusEmoji = (body) => getProfile(body).status_emoji;
@@ -20,5 +27,6 @@ module.exports = {
   getStatusText,
   getStatusEmoji,
   getDisplayName,
-  getUserList
+  getUserList,
+  getPeopleProfiles,
 };

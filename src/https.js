@@ -26,7 +26,7 @@ const get = (urlOrOpts, next) => {
     res.on('end', () => {
       try {
         const parsedData = JSON.parse(rawData);
-        console.log(parsedData);
+        next(parsedData);
       } catch (e) {
         console.error(e.message);
       }

@@ -28,11 +28,9 @@ app.get('/', function(req, res) {
 app.post('/slack/events', function (req, res) {
   const { body } = req;
   const { challenge } = body;
-  const statusText = slack.getStatusText(body);
-  const statusEmoji = slack.getStatusEmoji(body);
+  const profile = slack.getProfile(body);
 
-  if (lunch.isLunch(statusText) ||
-      lunch.isLunch(statusEmoji)) {
+  if (lunch.isTakingLunchRightNow(profile)) {
     lunch.itsLunchTime(body);
   }
   res.send(challenge);

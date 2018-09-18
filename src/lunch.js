@@ -1,6 +1,5 @@
 const slack = require('./slack.js');
 
-
 const LUNCH_FIELDS = [
   "lunch",
   ":taco:",
@@ -18,9 +17,28 @@ const isLunch = (statusString) => {
   return LUNCH_FIELDS.some(pred);
 };
 
-const itsLunchTime = (body) => {
-  console.log(slack.getDisplayName(body) + ' is on lunch');
-  slack.getUserList((r) => console.log(r));
+const isTakingLunchRightNow = (profile) => {
+  const { status_text, status_emoji } = profile;
+  return ( isLunch(status_text) || isLunch(status_emoji));
+}
+
+const findPeopleAlsoOnLunch = (userList) => {
+  return slack
+    .getPeopleProfiles(userList)
+    .filter(isTakingLunchRightNow)
+    .map((p) => p.display_name);
 };
 
-module.exports = { isLunch, itsLunchTime };
+const itsLunchTime = (body) => {
+  console.log(slack.getDisplayName(body) + ' is on lunch');
+  slack.getUserList((r) => {
+    const result = findPeopleAlsoOnLunch(r);
+    console.log('people also on lunch right now:', result);
+  });
+};
+
+module.exports = {
+  isLunch,
+  itsLunchTime,
+  isTakingLunchRightNow,
+};
