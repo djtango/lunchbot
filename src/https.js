@@ -1,4 +1,5 @@
 const https = require('https');
+const url = require('url');
 
 const get = (urlOrOpts, next) => {
   https.get(urlOrOpts, (res) => {
@@ -15,7 +16,6 @@ const get = (urlOrOpts, next) => {
     }
     if (error) {
       console.error(error.message);
-      // consume response data to free up memory
       res.resume();
       return;
     }
@@ -37,4 +37,39 @@ const get = (urlOrOpts, next) => {
   });
 };
 
-module.exports = { get };
+const post = (urlString, postData, next) => {
+  payload = JSON.stringify(postData || {});
+  const urlObj = url.parse(urlString);
+  const { hostname, pathname } = urlObj;
+  const httpsOpts = {
+    method: 'POST',
+    path: pathname,
+    hostname,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Content-Length': Buffer.byteLength(payload),
+      'Authorization': `Bearer ${postData.token}`,
+    },
+  };
+  let req = https.request(httpsOpts,  (res) => {
+    res.setEncoding('utf8');
+    let rawData = '';
+    res.on('data', (chunk) => { rawData += chunk; });
+    res.on('end', () => {
+      try {
+        const parsedData = JSON.parse(rawData);
+        next(parsedData);
+      } catch (e) {
+        console.error(e.message);
+      }
+    });
+  });
+  req.on('error', (e) => {
+    console.error(`problem with request: ${e.message}`);
+  });
+  req.write(payload);
+  req.end();
+  return req;
+};
+
+module.exports = { get, post };

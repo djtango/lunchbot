@@ -17,6 +17,26 @@ const getPeopleProfiles = (resp) => {
     .map(m => m.profile);
 };
 
+const postMessageToUser = (inputs, next) => {
+  const { message, userId } = inputs;
+  const SLACK_API = "https://slack.com/api/chat.postEphemeral";
+  return https.post(
+    SLACK_API,
+    {
+      token: SLACK_TOKEN,
+      channel: userId,
+      text: message,
+      user: userId,
+      as_user: true,
+    },
+    (r) => {
+      if (typeof next === "function") {
+        next(r);
+      }
+    }
+  );
+};
+
 const getProfile = (body) => body.body.event.user.profile;
 const getStatusText = (body) => getProfile(body).status_text;
 const getStatusEmoji = (body) => getProfile(body).status_emoji;
@@ -29,4 +49,5 @@ module.exports = {
   getDisplayName,
   getUserList,
   getPeopleProfiles,
+  postMessageToUser,
 };
