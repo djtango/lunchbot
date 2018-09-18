@@ -1,0 +1,10 @@
+{
+  "name": "lunchbot",
+  "version": "1.0.0",
+  "description": "Slackbot for seeing who is on lunch",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "djtango",
+  "license": "MIT"
+}
