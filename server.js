@@ -33,7 +33,7 @@ app.post('/slack/events', function (req, res) {
 
   if (lunch.isLunch(statusText) ||
       lunch.isLunch(statusEmoji)) {
-    console.log(slack.getDisplayName(body) + ' is on lunch');
+    lunch.itsLunchTime(body);
   }
   res.send(challenge);
 });

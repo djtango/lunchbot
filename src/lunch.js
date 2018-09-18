@@ -1,3 +1,6 @@
+const slack = require('./slack.js');
+
+
 const LUNCH_FIELDS = [
   "lunch",
   ":taco:",
@@ -15,4 +18,9 @@ const isLunch = (statusString) => {
   return LUNCH_FIELDS.some(pred);
 };
 
-module.exports = { isLunch };
+const itsLunchTime = (body) => {
+  console.log(slack.getDisplayName(body) + ' is on lunch');
+  slack.getUserList((r) => console.log(r));
+};
+
+module.exports = { isLunch, itsLunchTime };
