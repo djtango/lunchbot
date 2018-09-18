@@ -37,10 +37,12 @@ const postMessageToUser = (inputs, next) => {
   );
 };
 
-const getProfile = (body) => body.body.event.user.profile;
+const getUser = (body) => body.event.user;
+const getProfile = (body) => getUser(body).profile;
 const getStatusText = (body) => getProfile(body).status_text;
 const getStatusEmoji = (body) => getProfile(body).status_emoji;
 const getDisplayName = (body) => getProfile(body).display_name;
+const getUserId = (body) => getUser(body).id;
 
 module.exports = {
   getProfile,
@@ -50,4 +52,5 @@ module.exports = {
   getUserList,
   getPeopleProfiles,
   postMessageToUser,
+  getUserId,
 };

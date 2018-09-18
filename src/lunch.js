@@ -30,10 +30,11 @@ const findPeopleAlsoOnLunch = (userList) => {
 };
 
 const itsLunchTime = (body) => {
-  console.log(slack.getDisplayName(body) + ' is on lunch');
   slack.getUserList((r) => {
     const result = findPeopleAlsoOnLunch(r);
-    console.log('people also on lunch right now:', result);
+    const message = `people also on lunch right now: ${result.join(", ")}`
+    const userId = slack.getUserId(body);
+    slack.postMessageToUser({ message, userId });
   });
 };
 
