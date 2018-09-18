@@ -1,0 +1,65 @@
+{
+  "method": "POST",
+  "route": "/slack/events",
+  "body": {
+    "token": "token",
+    "team_id": "team_id",
+    "api_app_id": "api_app_id",
+    "event": {
+      "type": "user_change",
+      "user": {
+        "id": "id",
+        "team_id": "team_id",
+        "name": "name",
+        "deleted": false,
+        "color": "3c989f",
+        "real_name": "real_name",
+        "tz": "Europe/London",
+        "tz_label": "British Summer Time",
+        "tz_offset": 3600,
+        "profile": {
+          "title": "Tech",
+          "phone": "",
+          "skype": "",
+          "real_name": "real_name",
+          "real_name_normalized": "real_name_normalized",
+          "display_name": "display_name",
+          "display_name_normalized": "display_name_normalized",
+          "fields": [],
+          "status_text": "Lunch",
+          "status_emoji": ":taco:",
+          "status_expiration": 0,
+          "avatar_hash": "avatar_hash",
+          "email": "email",
+          "first_name": "Deon",
+          "last_name": "Tan",
+          "image_24": "image_24",
+          "image_32": "image_32",
+          "image_48": "image_48",
+          "image_72": "image_72",
+          "image_192": "image_192",
+          "image_512": "image_512",
+          "status_text_canonical": "",
+          "team": "team"
+        },
+        "is_admin": false,
+        "is_owner": false,
+        "is_primary_owner": false,
+        "is_restricted": false,
+        "is_ultra_restricted": false,
+        "is_bot": false,
+        "is_app_user": false,
+        "updated": 1537259938,
+        "locale": "en-US"
+      },
+      "cache_ts": 1537259938,
+      "event_ts": "1537259939.000200"
+    },
+    "type": "event_callback",
+    "event_id": "event_id",
+    "event_time": 1537259939,
+    "authed_users": [
+      "authed_users1"
+    ]
+  }
+}
