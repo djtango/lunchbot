@@ -1,19 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const slack = require('./src/slack.js');
+const lunch = require('./src/lunch.js');
+
 const app = express();
 const PORT = process.env.PORT || 4123;
-
-const LUNCH_FIELDS = [
-  "lunch",
-  ":taco:",
-  ":pizza:",
-  ":hamburger:",
-  ":ramen:",
-  ":hotdog:",
-  ":sandwich:",
-  ":spaghetti:"
-];
 
 const logRoutesMiddleware = (req, res, next) => {
   const msg = JSON.stringify({
@@ -32,25 +24,16 @@ app.get('/', function(req, res) {
   res.send({"message": "hello"});
 });
 
-const getProfile = (body) => body.body.event.user.profile;
-const getStatusText = (body) => getProfile(body).status_text;
-const getStatusEmoji = (body) => getProfile(body).status_emoji;
-const getDisplayName = (body) => getProfile(body).display_name;
-
-const isLunch = (statusString) => {
-  const s = statusString.toLowerCase();
-  const pred = (lunchField) => s === lunchField;
-  return LUNCH_FIELDS.some(pred);
-};
 
 app.post('/slack/events', function (req, res) {
   const { body } = req;
   const { challenge } = body;
-  const statusText = getStatusText(body);
-  const statusEmoji = getStatusEmoji(body);
+  const statusText = slack.getStatusText(body);
+  const statusEmoji = slack.getStatusEmoji(body);
 
-  if (isLunch(statusText) || isLunch(statusEmoji)) {
-    console.log(getDisplayName(body) + ' is on lunch');
+  if (lunch.isLunch(statusText) ||
+      lunch.isLunch(statusEmoji)) {
+    console.log(slack.getDisplayName(body) + ' is on lunch');
   }
   res.send(challenge);
 });
